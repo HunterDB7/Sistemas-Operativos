@@ -145,12 +145,11 @@ bool leer_proceso(int pid, ProcesoInfo &proc) {
     };
 
     iss >> proc.ppid;
-    saltar(10);
-    iss >> proc.utime >> proc.stime;
-    saltar(2);
-    iss >> proc.prioridad;
-    saltar(1);
-    iss >> proc.num_hilos;
+    saltar(9);  // campos 5 al 13 del stat
+    iss >> proc.utime >> proc.stime;  // campos 14 y 15
+    saltar(3);  // campos 16, 17 y 18
+    iss >> proc.prioridad;  // campo 19 (nice)
+    iss >> proc.num_hilos;  // campo 20
 
     std::ifstream status_file(base_path / "status");
     if (status_file.is_open()) {
