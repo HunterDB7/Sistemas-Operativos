@@ -20,10 +20,10 @@ public:
     TaskRuntime(const TaskRuntime&) = delete;
     TaskRuntime& operator=(const TaskRuntime&) = delete;
 
-    // Encola una tarea administrada y devuelve un std::future para sincronizar su finalizacion
+    // Agrega una tarea a la cola y devuelve un future para esperar a que termine
     std::future<void> submit(std::function<void()> task);
 
-    // Detiene el runtime y espera a los workers activos
+    // Detiene el pool y espera a los hilos
     void shutdown();
 
 private:

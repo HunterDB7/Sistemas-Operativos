@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-// ---------------- Limite de memoria ----------------
+// Limite de memoria
 
 static struct rlimit limite_original;
 static bool memoria_limitada = false;
@@ -42,7 +42,7 @@ void quitarLimiteMemoria() {
     }
 }
 
-// ---------------- Limite de CPU ----------------
+// Limite de CPU
 
 static std::string carpeta_cpu;   // carpeta nueva que creamos para el limite
 static std::string carpeta_padre; // carpeta donde estaba el programa antes

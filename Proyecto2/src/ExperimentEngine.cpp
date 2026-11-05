@@ -213,7 +213,7 @@ ExperimentResult ExperimentEngine::executeInternal(const ExperimentConfig& confi
         long sys_page_size = sysconf(_SC_PAGESIZE);
         result.page_size_bytes = (sys_page_size > 0) ? static_cast<std::size_t>(sys_page_size) : 4096;
 
-        // Limite de seguridad de 4096 MB para no agotar la memoria del equipo
+        // Maximo 4096 MB para no llenar la memoria del equipo
         std::size_t safe_mb = (config.virtual_mem_mb > 4096) ? 4096 : config.virtual_mem_mb;
         if (safe_mb == 0) {
             safe_mb = 16;
@@ -222,7 +222,7 @@ ExperimentResult ExperimentEngine::executeInternal(const ExperimentConfig& confi
         result.virtual_bytes_reserved = safe_mb * 1024ULL * 1024ULL;
         result.pages_reserved = result.virtual_bytes_reserved / result.page_size_bytes;
 
-        // Reserva de memoria virtual pura mediante mmap anonimo
+        // Reservamos la memoria virtual con mmap
         void* mapped = mmap(
             nullptr,
             result.virtual_bytes_reserved,
@@ -265,7 +265,7 @@ ExperimentResult ExperimentEngine::executeInternal(const ExperimentConfig& confi
             );
         });
 
-        // Retencion controlada para permitir que la TUI observe la RAM residente y el SWAP
+        // Esperamos un poco para poder ver la RAM y el SWAP en la interfaz
         std::size_t waited_ms = 0;
         while (waited_ms < config.hold_memory_ms &&
                !stop_requested_.load(std::memory_order_relaxed)) {

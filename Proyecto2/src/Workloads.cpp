@@ -14,7 +14,7 @@ std::uint64_t Workloads::runCpuUnit(
     std::uint64_t completed = 0;
 
     for (std::uint64_t i = 0; i < iterations; ++i) {
-        // Operacion intensiva en ALU/FPU para consumir tiempo real de CPU
+        // Calculo para gastar CPU
         accumulator = std::sin(accumulator) * std::cos(accumulator) + 1.000001;
         ++completed;
 
@@ -31,7 +31,7 @@ std::uint64_t Workloads::runCpuUnit(
         progress.completed_units.fetch_add(remainder, std::memory_order_relaxed);
     }
 
-    // Evita que el compilador elimine el calculo por optimizacion
+    // Para que el compilador no borre el calculo
     if (accumulator == 0.0) {
         return 0;
     }
@@ -52,7 +52,7 @@ std::uint64_t Workloads::runSharedDataUnit(
 
     for (std::uint64_t i = 0; i < iterations; ++i) {
         if (sync_mech == SyncMechanism::NONE) {
-            // Separacion explicita lectura-modificacion-escritura para evidenciar la carrera
+            // Leer, sumar y guardar por separado para que se note la carrera
             std::uint64_t temp = shared_counter;
             temp = temp + 1;
             shared_counter = temp;
@@ -106,7 +106,7 @@ std::uint64_t Workloads::touchMemoryPagesUnit(
             }
 
             std::size_t offset = page * page_size;
-            // Escribir en el primer y ultimo byte de la pagina fuerza al SO a asignar el marco fisico
+            // Al escribir en la pagina, el SO le asigna memoria real
             base_ptr[offset] = static_cast<std::uint8_t>((page + pass) & 0xFF);
             base_ptr[offset + page_size - 1] = static_cast<std::uint8_t>((page ^ pass) & 0xFF);
             local_checksum += base_ptr[offset] + base_ptr[offset + page_size - 1];

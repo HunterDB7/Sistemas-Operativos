@@ -10,14 +10,14 @@ namespace lab {
 
 class Workloads {
 public:
-    // Ejecuta carga intensiva de CPU para un trabajador
+    // Carga de CPU para un hilo
     static std::uint64_t runCpuUnit(
         std::uint64_t iterations,
         const std::atomic<bool>& stop_requested,
         LiveProgress& progress
     );
 
-    // Ejecuta acceso concurrente a variable compartida con o sin sincronizacion
+    // Suma a una variable compartida (con o sin sincronizacion)
     static std::uint64_t runSharedDataUnit(
         std::uint64_t iterations,
         SyncMechanism sync_mech,
@@ -28,7 +28,7 @@ public:
         LiveProgress& progress
     );
 
-    // Ejecuta reserva de memoria virtual con mmap y toca paginas en un rango asignado
+    // Escribe en un rango de paginas de la memoria reservada con mmap
     static std::uint64_t touchMemoryPagesUnit(
         std::uint8_t* base_ptr,
         std::size_t start_page,

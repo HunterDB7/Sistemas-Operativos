@@ -1,3 +1,5 @@
+// Estructuras que comparten el motor y la interfaz
+
 #ifndef EXPERIMENT_TYPES_HPP
 #define EXPERIMENT_TYPES_HPP
 
@@ -9,27 +11,27 @@
 
 namespace lab {
 
-// Modelos de ejecucion requeridos
+// Modelos de ejecucion
 enum class ExecutionModel {
-    NATIVE_OS_THREADS, // Hilos nativos (std::thread / pthread directo)
-    RUNTIME_TASKS      // Tareas administradas por un runtime (Pool de tareas)
+    NATIVE_OS_THREADS, // Hilos nativos (std::thread)
+    RUNTIME_TASKS      // Tareas de un runtime (pool de hilos)
 };
 
-// Tipos de pruebas del laboratorio
+// Tipos de prueba
 enum class WorkloadType {
-    CPU_BOUND,         // Carga intensiva de procesador
-    MEMORY_PRESSURE,   // Reserva de memoria virtual y acceso a paginas
-    SHARED_DATA_SYNC   // Acceso concurrente a dato compartido
+    CPU_BOUND,         // Carga de CPU
+    MEMORY_PRESSURE,   // Reserva de memoria y acceso a paginas
+    SHARED_DATA_SYNC   // Varios hilos usando un dato compartido
 };
 
-// Mecanismos de sincronizacion para datos compartidos
+// Tipos de sincronizacion
 enum class SyncMechanism {
-    NONE,              // Sin sincronizacion (condicion de carrera observable)
-    MUTEX,             // Exclusion mutua con std::mutex
+    NONE,              // Sin sincronizacion (hay condicion de carrera)
+    MUTEX,             // std::mutex
     SEMAPHORE          // Semaforo POSIX (sem_t)
 };
 
-// Estado de ejecucion del experimento
+// Estado de la prueba
 enum class ExperimentStatus {
     IDLE,
     RUNNING,
@@ -38,31 +40,31 @@ enum class ExperimentStatus {
     FAILED
 };
 
-// Configuracion de entrada enviada desde la interfaz TUI al motor
+// Configuracion de la prueba (la manda la interfaz al motor)
 struct ExperimentConfig {
     WorkloadType workload_type = WorkloadType::CPU_BOUND;
     ExecutionModel exec_model = ExecutionModel::NATIVE_OS_THREADS;
     SyncMechanism sync_mech = SyncMechanism::NONE;
 
-    std::size_t num_threads = 4;               // Cantidad de hilos o workers
-    std::size_t num_tasks = 16;                // Cantidad de tareas (si usa runtime)
+    std::size_t num_threads = 4;               // Cantidad de hilos
+    std::size_t num_tasks = 16;                // Cantidad de tareas (modo runtime)
 
-    // Parametros para carga de CPU y Sincronizacion
+    // Para la prueba de CPU y la de dato compartido
     std::uint64_t iterations_per_worker = 5000000;
 
-    // Parametros para carga de Memoria Virtual y Paginacion
-    std::size_t virtual_mem_mb = 256;          // Memoria virtual total a reservar
-    std::size_t touch_percentage = 100;        // Porcentaje de paginas a escribir (RAM/SWAP)
-    std::size_t memory_passes = 3;             // Pasadas de lectura/escritura sobre las paginas
-    std::size_t hold_memory_ms = 1000;         // Tiempo reteniendo paginas antes de liberar
+    // Para la prueba de memoria
+    std::size_t virtual_mem_mb = 256;          // Memoria virtual a reservar
+    std::size_t touch_percentage = 100;        // Porcentaje de paginas que se escriben
+    std::size_t memory_passes = 3;             // Cuantas veces se recorren las paginas
+    std::size_t hold_memory_ms = 1000;         // Tiempo que se mantiene la memoria antes de liberarla
 
-    // Parametros informativos de limites para registro (aplicados por Integrante 2)
+    // Limites (los aplica la interfaz, aqui solo se guardan)
     std::size_t cpu_quota_percent = 100;
     std::size_t memory_limit_mb = 0;
     bool limits_applied_successfully = true;
 };
 
-// Metricas en tiempo real para que el Integrante 2 actualice la TUI durante la prueba
+// Progreso en vivo, para mostrarlo mientras corre la prueba
 struct LiveProgress {
     std::atomic<ExperimentStatus> status{ExperimentStatus::IDLE};
     std::atomic<std::uint64_t> completed_units{0};
@@ -71,7 +73,7 @@ struct LiveProgress {
     std::atomic<double> elapsed_ms{0.0};
 };
 
-// Resultado consolidado de un experimento finalizado
+// Resultado de una prueba terminada
 struct ExperimentResult {
     std::uint64_t run_id = 0;
     ExperimentConfig config;
@@ -81,19 +83,19 @@ struct ExperimentResult {
     std::uint64_t total_operations = 0;
     double operations_per_sec = 0.0;
 
-    // Resultados especificos de acceso compartido y sincronizacion
+    // Dato compartido
     std::uint64_t expected_shared_value = 0;
     std::uint64_t actual_shared_value = 0;
     std::int64_t lost_updates = 0;
 
-    // Resultados especificos de memoria paginada desde el motor
+    // Memoria
     std::size_t page_size_bytes = 4096;
     std::size_t virtual_bytes_reserved = 0;
     std::size_t pages_reserved = 0;
     std::size_t pages_touched = 0;
     std::uint64_t memory_checksum = 0;
 
-    // Campos listos para que el Integrante 2 anexe el monitoreo del SO (/proc)
+    // Mediciones del sistema (las llena la interfaz leyendo /proc)
     std::size_t peak_rss_kb = 0;
     std::size_t peak_vmsize_kb = 0;
     std::size_t peak_swap_kb = 0;

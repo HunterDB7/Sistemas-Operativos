@@ -1,5 +1,4 @@
-// Interfaz TUI (Integrante 2)
-// Aqui se configuran las pruebas, se ejecutan con el motor y se muestran los resultados.
+// Interfaz del programa: configura las pruebas, las ejecuta con el motor y muestra los resultados
 
 #include <ncurses.h>
 
@@ -15,7 +14,7 @@
 
 using namespace lab;
 
-// ---------------- Variables globales ----------------
+// Variables globales
 
 ExperimentEngine engine;
 ExperimentConfig config;                 // la configuracion actual
@@ -42,7 +41,7 @@ std::string aviso = "";                  // mensaje para el usuario
 int seleccion = 0;
 bool verTabla = false;
 
-// ---------------- Configuracion ----------------
+// Configuracion
 
 const int NUM_ITEMS = 11;
 const char* nombres[NUM_ITEMS] = {
@@ -118,7 +117,7 @@ std::string valorItem(int i) {
     return (config.cpu_quota_percent == 0) ? "sin limite" : std::to_string(config.cpu_quota_percent);
 }
 
-// ---------------- Control de las pruebas ----------------
+// Control de las pruebas
 
 void iniciarPrueba(ExperimentConfig cfg) {
     if (corriendo) {
@@ -198,7 +197,7 @@ void actualizarMonitor() {
     }
 }
 
-// ---------------- Dibujo de pantallas ----------------
+// Dibujo de pantallas
 
 const char* textoEstado(ExperimentStatus e) {
     if (e == ExperimentStatus::IDLE) return "SIN EJECUTAR";
@@ -340,7 +339,7 @@ void dibujarTabla() {
     mvprintw(LINES - 1, 0, "[t] volver  [c] borrar historial  [q] salir");
 }
 
-// ---------------- Programa principal ----------------
+// Programa principal
 
 int main() {
     // Valores iniciales (sin limites)

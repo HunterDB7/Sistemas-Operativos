@@ -19,34 +19,34 @@ public:
     ExperimentEngine(const ExperimentEngine&) = delete;
     ExperimentEngine& operator=(const ExperimentEngine&) = delete;
 
-    // Ejecuta un experimento de forma bloqueante y devuelve su resultado
+    // Corre la prueba y espera a que termine
     ExperimentResult runExperiment(const ExperimentConfig& config);
 
-    // Inicia un experimento en segundo plano (ideal para que la TUI no se congele)
+    // Inicia la prueba en segundo plano
     bool startExperimentAsync(const ExperimentConfig& config);
 
-    // Solicita la detencion segura e inmediata del experimento en curso
+    // Pide detener la prueba que esta corriendo
     void stopExperiment();
 
-    // Espera a que termine el experimento en segundo plano y devuelve su resultado
+    // Espera a que termine la prueba en segundo plano
     ExperimentResult waitForCompletion();
 
-    // Repite el ultimo experimento ejecutado con su misma configuracion
+    // Repite la ultima prueba
     ExperimentResult repeatLastExperiment();
 
-    // Ejecuta y compara automaticamente una prueba sin sincronizacion vs sincronizada
+    // Corre la prueba sin sincronizar y luego con sincronizacion
     std::pair<ExperimentResult, ExperimentResult> compareSyncVsUnsync(
         ExperimentConfig base_config,
         SyncMechanism target_sync = SyncMechanism::MUTEX
     );
 
-    // Consulta el progreso en tiempo real de manera segura entre hilos
+    // Progreso en vivo
     const LiveProgress& getLiveProgress() const;
 
-    // Obtiene el historial completo de resultados para comparaciones en la TUI
+    // Historial de resultados
     std::vector<ExperimentResult> getResultsHistory() const;
 
-    // Limpia el historial de ejecuciones previas
+    // Borra el historial
     void clearHistory();
 
 private:
