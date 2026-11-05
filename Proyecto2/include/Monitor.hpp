@@ -1,3 +1,5 @@
+// Declara las funciones para medir la memoria y los fallos de pagina
+
 #ifndef MONITOR_HPP
 #define MONITOR_HPP
 

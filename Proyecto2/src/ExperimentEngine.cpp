@@ -1,3 +1,5 @@
+// Motor de pruebas: crea los hilos o tareas, corre la carga elegida y arma el resultado
+
 #include "ExperimentEngine.hpp"
 #include "TaskRuntime.hpp"
 #include "Workloads.hpp"

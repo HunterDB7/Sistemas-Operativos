@@ -1,3 +1,5 @@
+// Lee de /proc y getrusage la memoria virtual, la RAM, el swap y los fallos de pagina
+
 #include "Monitor.hpp"
 
 #include <cstdlib>

@@ -1,3 +1,5 @@
+// Declara el pool de hilos que ejecuta las tareas del modo runtime
+
 #ifndef TASK_RUNTIME_HPP
 #define TASK_RUNTIME_HPP
 

@@ -1,3 +1,5 @@
+// Declara el motor que corre las pruebas (iniciar, detener, repetir y ver el progreso)
+
 #ifndef EXPERIMENT_ENGINE_HPP
 #define EXPERIMENT_ENGINE_HPP
 

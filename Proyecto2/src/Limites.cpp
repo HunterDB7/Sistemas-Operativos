@@ -1,3 +1,5 @@
+// Pone los limites: memoria con setrlimit y CPU con cgroups
+
 #include "Limites.hpp"
 #include "Monitor.hpp"
 

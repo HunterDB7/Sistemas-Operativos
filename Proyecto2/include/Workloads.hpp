@@ -1,3 +1,5 @@
+// Declara las tres cargas de trabajo: CPU, dato compartido y memoria
+
 #ifndef WORKLOADS_HPP
 #define WORKLOADS_HPP
 

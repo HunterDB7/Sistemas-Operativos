@@ -1,3 +1,5 @@
+// Declara las funciones para poner y quitar los limites de memoria y de CPU
+
 #ifndef LIMITES_HPP
 #define LIMITES_HPP
 

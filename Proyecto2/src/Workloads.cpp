@@ -1,3 +1,5 @@
+// Trabajo que hace cada hilo: calculo de CPU, suma a un dato compartido y escritura de paginas
+
 #include "Workloads.hpp"
 #include <cmath>
 #include <thread>

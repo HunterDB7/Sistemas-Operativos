@@ -1,3 +1,5 @@
+// Pool de hilos: los workers sacan tareas de una cola y las ejecutan
+
 #include "TaskRuntime.hpp"
 
 namespace lab {
